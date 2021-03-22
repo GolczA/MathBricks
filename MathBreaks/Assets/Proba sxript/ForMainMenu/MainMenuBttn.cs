@@ -11,6 +11,11 @@ public class MainMenuBttn : MonoBehaviour
     [SerializeField] GameObject scrollMenu;
     [SerializeField] GameObject playBttn;
 
+    GameObject mainMenu;
+
+    [SerializeField] AudioSource noMoneyMusic;
+    [SerializeField] AudioSource upgradeMusic;
+
     // для Sound конпки 
     [SerializeField] GameObject soundBttn;
     public Sprite soundOffSprite;
@@ -23,12 +28,29 @@ public class MainMenuBttn : MonoBehaviour
 
     [SerializeField] Text score; // будет выводить количество очков которые набрал игрок
 
+    //Для апгрейда
+    int UpgradeToOne;
+    int UpgradeToOneTenth;
+    public Text bullMass;
+    public Text bullSpeed;
+
     private void Start()
     {
+        mainMenu = GameObject.FindGameObjectWithTag("MainData");
+        UpgradeToOne = 1000;
+        UpgradeToOneTenth = 100;
+        bullMass.text = (MainData.bullMass).ToString();
+        bullSpeed.text = (MainData.bullSpeed).ToString();
         score.text = (MainData.playerUpgradePoints).ToString();
-        if (MainData.isPause == true) upgradeMenu.SetActive(true);
+        if (MainData.isUpgrade == true) upgradeMenu.SetActive(true);
     }
 
+    private void Update()
+    {
+        bullMass.text = (MainData.bullMass).ToString();
+        bullSpeed.text = (MainData.bullSpeed).ToString();
+        score.text = (MainData.playerUpgradePoints).ToString();
+    }
 
     #region Главное меню 
 
@@ -37,17 +59,17 @@ public class MainMenuBttn : MonoBehaviour
         if (MainData.isWin == true)
         {
             SceneManager.LoadScene(MainData.indexScene + 1);
-            MainData.isWin = false; 
+            MainData.isWin = false;
         }
         if (MainData.isLose == true)
         {
             SceneManager.LoadScene(MainData.indexScene);
-            MainData.isLose = false; 
+            MainData.isLose = false;
         }
         if (MainData.isPause == true)
         {
             SceneManager.LoadScene(MainData.indexScene);
-            MainData.isPause = false; 
+            MainData.isPause = false;
         }
     }
 
@@ -88,11 +110,13 @@ public class MainMenuBttn : MonoBehaviour
             soundBttn.GetComponent<Image>().sprite = soundOffSprite;
             MainData.isSoundOn = !MainData.isSoundOn;
             Debug.Log(MainData.isSoundOn);
+            mainMenu.GetComponent<AudioSource>().Stop(); 
         }
         else
         {
             soundBttn.GetComponent<Image>().sprite = soundOnSprite;
             MainData.isSoundOn = !MainData.isSoundOn;
+            mainMenu.GetComponent<AudioSource>().Play();
             Debug.Log("Сработал");
         }
     }
@@ -117,7 +141,7 @@ public class MainMenuBttn : MonoBehaviour
     public void UpgradeBttn()
     {
         meinMenu.SetActive(false);
-        upgradeMenu.SetActive(true); 
+        upgradeMenu.SetActive(true);
     }
 
     #endregion
@@ -125,10 +149,10 @@ public class MainMenuBttn : MonoBehaviour
     #region Апгрейд меню
     public void ToBack()
     {
-        if (MainData.isPause == true)
+        if (MainData.isUpgrade == true)
         {
             SceneManager.LoadScene(MainData.indexScene);
-            MainData.isPause = false;
+            MainData.isUpgrade = false;
         }
         else
         {
@@ -137,5 +161,76 @@ public class MainMenuBttn : MonoBehaviour
         }
     }
 
+    public void IncreaseMaasOnOneKilo()
+    {
+        if (MainData.playerUpgradePoints >= UpgradeToOne)
+        {
+            MainData.playerUpgradePoints -= UpgradeToOne;
+            MainData.bullMass += 1;
+            UpgradePlayMusic(); 
+        }
+        else
+        {
+            NoMoneyPlayMusic();
+        }
+
+    }
+
+    public void IncreaseMaasOnOneTenhtKilo()
+    {
+        if (MainData.playerUpgradePoints >= UpgradeToOneTenth)
+        {
+            MainData.playerUpgradePoints -= UpgradeToOneTenth;
+            MainData.bullMass += 0.1f;
+            UpgradePlayMusic();
+        }
+        else
+        {
+            NoMoneyPlayMusic();
+        }
+
+    }
+
+    public void IncreaseSpeedOnOneTenht()
+    {
+        if (MainData.playerUpgradePoints >= UpgradeToOneTenth)
+        {
+            MainData.playerUpgradePoints -= UpgradeToOneTenth;
+            MainData.bullSpeed += 100f;
+            UpgradePlayMusic();
+        }
+        else
+        {
+            NoMoneyPlayMusic();
+        }
+
+    }
+
+    public void IncreaseSpeedOnOne()
+    {
+        if (MainData.playerUpgradePoints >= UpgradeToOne)
+        {
+            MainData.playerUpgradePoints -= UpgradeToOne;
+            MainData.bullSpeed += 1000f;
+            UpgradePlayMusic();
+
+        }
+        else
+        {
+            NoMoneyPlayMusic();
+        }
+
+    }
+
     #endregion
+
+    void NoMoneyPlayMusic()
+    {
+        noMoneyMusic.Play();
+    } // нет денег запуск музыки
+    void UpgradePlayMusic()
+    {
+        upgradeMusic.Play();
+    } // апгрейд удачный
 }
+

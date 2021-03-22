@@ -28,6 +28,8 @@ public class MainData : MonoBehaviour
     public static bool isPause; // если тру знаичт мы перешли в мэйн меню из игры, победы и порожения не было
     public static bool isWin; // если тру знаичт мы перешли в мэйн меню из игры после победы
     public static bool isLose; // если тру знаичт мы перешли в мэйн меню из игры после поражения
+    public static bool isUpgrade; // если тру знаичт мы перешли в мэйн меню из игры при нажатии Апгрейд Кнопки
+    public static bool isFirstGame; //первая игра ? 
 
     #region не статические данные
     public int[] pointToWinLevelsNoStat; // количество очков для прохождения уровня
@@ -50,11 +52,14 @@ public class MainData : MonoBehaviour
     public bool isPauseNoStat; // если тру знаичт мы перешли в мэйн меню из игры, победы и порожения не было
     public bool isWinNoStat; // если тру знаичт мы перешли в мэйн меню из игры после победы
     public bool isLoseNoStat; // если тру знаичт мы перешли в мэйн меню из игры после поражения
+    public bool isFirstGameNoStat; //первая игра ? 
     #endregion
     [Multiline(50)]
     public string stringForSave;
 
     public int fackincount;
+
+    //private AudioSource mainAudio;
 
 
 
@@ -67,20 +72,21 @@ public class MainData : MonoBehaviour
         if (objs.Length > 1)
         {
             Destroy(this.gameObject);
-            Debug.Log($"этот объект уничтожен --- {fackincount}, количество обьектов {objs.Length}");
+            //Debug.Log($"этот объект уничтожен --- {fackincount}, количество обьектов {objs.Length}");
         }
         else
         {
             DontDestroyOnLoad(this.gameObject);
             if (PlayerPrefs.HasKey("MainMenu"))
             {
+                //Debug.Log("Работает загрузка");
                 stringForSave = PlayerPrefs.GetString("MainMenu");
                 JsonUtility.FromJsonOverwrite(stringForSave, this);
                 ChangeToLaod();
             }
             else
             {
-                Debug.Log("Работает не загрузка");
+                //Debug.Log("Работает не загрузка");
                 pointToWinLevels = new int[3] { 2, 2, 2 };
                 playerRecordToLevels = new float[3] { 0, 0, 0 };
                 levelTrue = new bool[3] { false, false, false };
@@ -88,28 +94,35 @@ public class MainData : MonoBehaviour
                 howMatchWin = 3;
                 howMatchLose = 3;
                 howMatchrestart = 2;
-                playerUpgradePoints = 25;
+                playerUpgradePoints = 1000;
 
+                isSoundOn = true;
                 indexScene = SceneManager.GetActiveScene().buildIndex;
                 isPause = false;
                 isWin = false;
                 isLose = false;
+                isFirstGame = false;
 
-                attemption = 9;
-                bullMass = 2.1f;
-                bullSpeed = 2000;
+                isEnglish = true;
+
+                attemption = 5;
+                bullMass = 0.1f;
+                bullSpeed = 1000;
             }
         }
     }
 
     public void Update()
     {
-        Debug.Log($"{howMatchWin} значения счетчика побед");
+        //Debug.Log($"{playerUpgradePoints} значения количество очков");
     }
-
+    private void OnApplicationPause(bool pause)
+    {
+        //Debug.Log("Он Апликатион Паузе сработал");
+    }
     private void OnApplicationQuit()
     {
-        SaveGame();
+        //SaveGame();
     }
 
     public void DelSaveData()
@@ -122,6 +135,7 @@ public class MainData : MonoBehaviour
         ChangeToSaveData();
         stringForSave = JsonUtility.ToJson(this, true);
         PlayerPrefs.SetString("MainMenu", stringForSave);
+        Debug.Log("Игра Сохранена");
     }
 
     public void ChangeToSaveData()
@@ -145,6 +159,7 @@ public class MainData : MonoBehaviour
         isPauseNoStat = isPause;
         isWinNoStat = isWin;
         isLoseNoStat = isLose;
+        isFirstGameNoStat = isFirstGame;
     }
     public void ChangeToLaod()
     {
@@ -167,7 +182,7 @@ public class MainData : MonoBehaviour
         isPause = isPauseNoStat;
         isWin = isWinNoStat;
         isLose = isLoseNoStat;
-
+        isFirstGame = isFirstGameNoStat; 
     }
 
 

@@ -90,7 +90,7 @@ public class ButtonManager : MonoBehaviour
     public void UgrBttnInGame()
     {
         SceneManager.LoadScene("MainMenu");
-        MainData.isPause = true; 
+        MainData.isUpgrade = true; 
     }
 
     public void BullToStartPoint()
@@ -118,12 +118,14 @@ public class ButtonManager : MonoBehaviour
     // кнопки WinMenu
     public void WinCancelAdvs()
     {
-        MainData.howMatchWin += 1; 
+        MainData.howMatchWin += 1;
+        MainData.playerUpgradePoints += 20;
         SceneManager.LoadScene("MainMenu");
     }
     public void WinYesAdvs()
     {
-        MainData.howMatchWin += 1; 
+        MainData.howMatchWin += 1;
+        MainData.playerUpgradePoints += 40;
         SceneManager.LoadScene("MainMenu");
     }
     #endregion

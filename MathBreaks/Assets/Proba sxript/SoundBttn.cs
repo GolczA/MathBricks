@@ -8,10 +8,6 @@ public class SoundBttn : MonoBehaviour
     public Sprite soundOffSprite;
     public Sprite soundOnSprite;
 
-    public void Awake()
-    {
-        MainData.isSoundOn = false;
-    }
     public void Start()
     {
         if (MainData.isSoundOn == true) gameObject.GetComponent<Image>().sprite = soundOnSprite;

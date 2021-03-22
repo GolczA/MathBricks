@@ -6,13 +6,16 @@ using UnityEngine.UI;
 public class TextProba : MonoBehaviour
 {
     private Text tx;
-    //GameObject dontDestr;
+
 
     private void Start()
     {
-        tx = GetComponent<Text>();
-        //dontDestr = GameObject.FindGameObjectWithTag("Wood");
-        //tx.text = dontDestr.GetComponent<DontDestroyProba>().numberMass.ToString();
+        tx = gameObject.GetComponent<Text>();
+    }
+
+    public void ChangeText()
+    {
+        tx.text = "Ура, мы заебенили делегат !!! ";
     }
 
 

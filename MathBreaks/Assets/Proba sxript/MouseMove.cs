@@ -19,6 +19,7 @@ public class MouseMove : MonoBehaviour
     [SerializeField] GameObject LoseMenuAdds;
     [SerializeField] Rigidbody2D[] rbBlocks;
 
+
     Vector3 startBallPos; // начальная позиция мяча, при касании мыши мяч появляется в этой точке 
 
     Rigidbody2D rb; // риджит боди мяча, нужно для движения
@@ -33,6 +34,7 @@ public class MouseMove : MonoBehaviour
     private void Start()
     {
         MainData.indexScene = SceneManager.GetActiveScene().buildIndex;
+        //Debug.Log(indexScene);
         indexScene = SceneManager.GetActiveScene().buildIndex;
         rb = MainBull.GetComponent<Rigidbody2D>();
         startBallPos = startPoint.position;
@@ -44,6 +46,7 @@ public class MouseMove : MonoBehaviour
 
     private void Update()
     {
+        Debug.Log(MainData.isSoundOn + "Статус музыки");
         if (attemption == 0)
         {
             if (AllObjectStay(rbBlocks) == true && MainBullStay(rb) == true) //проверка мяч и все объекты стоят
@@ -118,6 +121,7 @@ public class MouseMove : MonoBehaviour
     }
     public void Win()
     {
+        
         if (MainData.howMatchWin % 3 == 0)
         {
             if (MainData.playerRecordToLevels[indexScene] < levelGo.scoreNow)
@@ -139,16 +143,18 @@ public class MouseMove : MonoBehaviour
             if (gameObject.GetComponent<BoxCollider2D>().enabled != false)//после выбора рекламы изменяется значениеи howMatchWin и отрабтыается еще одно условие и в результате этот параметр увеличивается на 2
             {
                 MainData.howMatchWin += 1;
+                MainData.playerUpgradePoints += 20;
             }
             MainData.isWin = true;
             SceneManager.LoadScene("MainMenu");
-            Debug.Log("Бля я сработал");
+            //Debug.Log("Бля я сработал");
         }
 
     }
 
     public void Lose()
     {
+
         if (MainData.howMatchLose % 3 == 0)
         {
             MainData.isLose = true; 
@@ -160,10 +166,11 @@ public class MouseMove : MonoBehaviour
             MainData.isLose = true; 
             MainData.howMatchLose += 1;
             SceneManager.LoadScene("MainMenu");
+            
         }
     }
 
-    bool AllObjectDestroy(params Rigidbody2D[] blocks) 
+    bool AllObjectDestroy(params Rigidbody2D[] blocks) // все ли объекты уничтожены
     {
         int count = 0;
         for(int i = 0; i < blocks.Length; i ++)
@@ -180,7 +187,7 @@ public class MouseMove : MonoBehaviour
         }
         else return false;
     }
-    bool AllObjectStay(params Rigidbody2D[] blocks)
+    bool AllObjectStay(params Rigidbody2D[] blocks) // все ли объекты остановились
     {
         int count = 0;
         Vector2 stay = new Vector2(0, 0);
@@ -194,7 +201,7 @@ public class MouseMove : MonoBehaviour
         if (count == blocks.Length) return true;
         else return false;
     }
-    bool MainBullStay(Rigidbody2D mainBull)
+    bool MainBullStay(Rigidbody2D mainBull) // проверяет остановился ли главный мяч
     {
         Vector2 stay = new Vector2(0, 0);
         if (mainBull.velocity == stay)

@@ -30,19 +30,19 @@ public class UpgaradeMenu : MonoBehaviour
                 BttnInScrollMenu[i].GetComponent<Button>().interactable = false;
             }
         }
-        Debug.Log(count.ToString());
+        //Debug.Log(count.ToString());
     }
     public void BttPress0()
     {
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene(1);
     }
     public void BttPress1()
     {
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene(2);
     }
     public void BttPress2()
     {
-        SceneManager.LoadScene(2);
+        SceneManager.LoadScene(3);
     }
     /*public void BttPress3()
     {
